@@ -235,3 +235,13 @@ int Mechanizm(char tablica[][kolumny], int wiersz, int kolumna, char zeton)
 
     return odwrocone_pionki;
 }
+/****************************************************************************/
+
+
+// Sprawdza czy mozna zrobic wazny ruch
+int Czy_ruch_jest_mozliwy(const char tablica[][kolumny], char player)
+{
+    return 1;
+}
+
+/**********************************
