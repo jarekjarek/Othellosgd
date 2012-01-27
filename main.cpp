@@ -245,3 +245,144 @@ int Czy_ruch_jest_mozliwy(const char tablica[][kolumny], char player)
 }
 
 /**********************************
+
+
+ */
+
+
+
+void Czlowiek(char tablica[][kolumny])
+{
+    int wiersz, kolumna;
+    bool nielegalny_ruch;
+
+
+    if (Czy_ruch_jest_mozliwy(tablica, czlowiek))
+    {
+        do
+        {
+            nielegalny_ruch = false;
+
+            cout << "wiersz? ";
+            cin >> wiersz;
+            while (wiersz < 0 || wiersz >= wiersze)
+            {
+                cout << "Wybierz wiersz od 0 do " << (wiersze - 1) << ".\n";
+                cout << "wiersz? ";
+                cin >> wiersz;
+            }
+
+            cout << "kolumna? ";
+            cin >> kolumna;
+            while (kolumna < 0 || kolumna >= kolumny)
+            {
+                cout << "Wybierz kolumne od 0 do " << (kolumny - 1) << ".\n";
+                cout << "kolumna? ";
+                cin >> kolumna;
+            }
+
+            if (tablica[wiersz][kolumna] != ' ')// sprawdza czy pole jest puste
+            {
+                cout << "Podaj puste pole na planszy.\n";
+                nielegalny_ruch = 1;
+            }
+            else
+            {
+                int odwocone_pionki = Mechanizm(tablica, wiersz, kolumna, czlowiek);
+                if (odwocone_pionki == 0)
+                {
+                    cout << "nielegalny ruch\n";
+                    nielegalny_ruch = true;
+                }
+                else if (odwocone_pionki == 1)
+                    cout << "odwrocony 1 pionek.\n\n";
+                else
+                    cout << "odwrocone " << odwocone_pionki << " pionki.\n\n";
+            }
+        } while (nielegalny_ruch);
+    }
+    else
+    {
+        cout << "nie mozesz sie ruszac.\n";
+    }
+}
+
+void ZapiszTablice(char tablica[][kolumny], char tym_tablica[][kolumny])
+{
+
+    for( int i = 0; i < wiersze; i++)
+    {
+        for(int j =0; j < kolumny; j++)
+            tym_tablica[i][j]= tablica[i][j];
+    }
+}
+
+
+
+
+
+void Computer(char tablica[][kolumny])
+{
+    char tym_tablica[wiersze][kolumny];
+    int odwrocone_pionki[wiersze][kolumny];
+    int pionki;
+    int temp = 0;
+    int i,j;
+
+    ZapiszTablice(tablica,tym_tablica);
+
+    pionki=0;
+    srand((int)time(0));
+
+    while (pionki == 0){
+
+        i=rand()%8;
+        j=rand()%8;
+        if(tablica[i][j] != 'X' ||tablica[i][j] !='O' )
+            {
+                pionki = Mechanizm(tablica,i,j,'O');
+
+
+            }
+    }
+
+
+
+}
+
+
+void main()
+{
+
+    //Run these two lines first
+    HANDLE hcolor;
+    hcolor = GetStdHandle (STD_OUTPUT_HANDLE);
+    char tablica[wiersze][kolumny];
+
+    //Use this function to set your colors
+    SetConsoleTextAttribute(hcolor, kolor);
+
+
+    for(int i=0;i<8;i++)for(int j=0;j<8;j++)tablica[j][i]=' ';
+    tablica[3][3]='O';
+    tablica[3][4]='X';
+    tablica[4][3]='X';
+    tablica[4][4]='O';
+
+
+    int b=0;
+    WyswietlTablice(tablica);
+    while(b<10)
+    {
+    cout << endl;
+
+    Czlowiek(tablica);
+    WyswietlTablice(tablica);
+    Computer(tablica);
+    WyswietlTablice(tablica);
+    b++;
+    }
+
+
+    system("Pause");
+}
